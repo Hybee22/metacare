@@ -9,13 +9,6 @@ class MovieService {
     const sortedRes = data.results.sort(dynamicSort("release_date"));
     return sortedRes;
   }
-
-  async getComments(id) {
-    const comments = await db.Comment.findAndCountAll({
-      where: { movieId: id },
-    });
-    return comments;
-  }
 }
 
 export default new MovieService();
