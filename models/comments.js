@@ -24,6 +24,10 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
+    ipAddress: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   Comment.associate = (model) => {

@@ -9,6 +9,7 @@ class CommentService {
   async getComments(id) {
     const comments = await db.Comment.findAndCountAll({
       where: { movieId: id },
+      order: [[db.sequelize.col("createdAt"), "DESC"]],
     });
     return comments;
   }
