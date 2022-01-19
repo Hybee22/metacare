@@ -15,8 +15,6 @@ const env = process.env.NODE_ENV || "development";
 import configs from "../config/config.js";
 const config = configs[env];
 
-console.log({ config });
-
 const db = {};
 
 let sequelize;

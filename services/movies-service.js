@@ -7,6 +7,11 @@ class MovieService {
     const sortedRes = data.results.sort(dynamicSort("release_date"));
     return sortedRes;
   }
+
+  async getMovie(id) {
+    const { data } = await axios.get(`https://swapi.py4e.com/api/films/${id}`);
+    return data;
+  }
 }
 
 export default new MovieService();

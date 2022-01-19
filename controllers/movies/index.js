@@ -30,6 +30,28 @@ class MovieController {
       errorResMsg(res, 500, "Something went wrong while fetching movie list");
     }
   }
+  async listOne(req, res) {
+    try {
+      const { id } = req.params;
+      const data = await moviesService.getMovie(id);
+      const comments = await commentsService.getComments(data.episode_id);
+      const response = {
+        title: data.title,
+        episode_id: data.episode_id,
+        opening_crawl: data.opening_crawl,
+        release_date: data.release_date,
+        comments: comments.count,
+      };
+
+      return successResMsg(res, 200, {
+        message: "Movie details fetched successfully",
+        data: response,
+      });
+    } catch (error) {
+      logger.error(error);
+      errorResMsg(res, 500, "Something went wrong while fetching movie");
+    }
+  }
 }
 
 export default new MovieController();
