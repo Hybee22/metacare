@@ -3,8 +3,9 @@ import commentsService from "../../services/comments-service.js";
 
 import { successResMsg, errorResMsg } from "../../utilities/response.js";
 import { Logger as logger } from "../../logger.js";
-import CommentDTO from "../../dtos/comments-dto.js";
+import { CommentDTO, CommentsDTO } from "../../dtos/comments-dto.js";
 import getIp from "../../utilities/getIp.js";
+import moviesService from "../../services/movies-service.js";
 
 class CommentController {
   async create(req, res) {
@@ -42,10 +43,38 @@ class CommentController {
   async list(req, res) {
     try {
       const id = req.query.id;
-      const data = await commentsService.getComments(Number(id));
+      const _data = await commentsService.getComments(Number(id));
+      const data = CommentsDTO(_data.rows);
       return successResMsg(res, 200, {
         message: "Comments fetched successfully",
-        data,
+        data: data,
+      });
+    } catch (error) {
+      logger.error(error);
+      errorResMsg(res, 500, "Something went wrong while fetching comments");
+    }
+  }
+
+  async getByTitle(req, res) {
+    try {
+      let tempData;
+      const { title } = req.query;
+      const movies = await moviesService.getMovies();
+      tempData = movies;
+
+      tempData = tempData.filter(
+        (movie) => movie.title.toLowerCase() === title.toLowerCase()
+      );
+
+      if (tempData.length === 0) {
+        return errorResMsg(res, 404, "Movie not found");
+      }
+
+      const _data = await commentsService.getComments(tempData[0].episode_id);
+      const data = CommentsDTO(_data.rows);
+      return successResMsg(res, 200, {
+        message: "Comments for title fetched successfully",
+        data: data,
       });
     } catch (error) {
       logger.error(error);

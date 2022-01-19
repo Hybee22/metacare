@@ -9,4 +9,7 @@ router.post("/create", commentsController.create);
 // LIST
 router.get("/list", commentsController.list);
 
+// GET COMMENTS BY TITLE
+router.get("/", commentsController.getByTitle);
+
 export const commentsRouter = router;
