@@ -27,17 +27,18 @@ app.use(urlencoded({ extended: false }));
 // Default Route
 app.get("/", (req, res) => {
   return successResMsg(res, 200, {
-    message: "Welcome to the Tasks App API",
+    message: "Welcome to the Metacare Test API",
   });
+});
+// Documentation
+app.get("/docs", (req, res) => {
+  return res.json(documentation);
 });
 
 // Routes
 import routes from "./routes/index.js";
 
 // ************ REGISTER ROUTES HERE ********** //
-app.get("/docs", (req, res) => {
-  return res.json(documentation);
-});
 routes(app);
 // ************ END ROUTE REGISTRATION ********** //
 
