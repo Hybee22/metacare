@@ -7,6 +7,7 @@ import helmet from "helmet";
 import logger from "morgan";
 import { errorHandler } from "./middlewares/error-handler.js";
 import { successResMsg } from "./utilities/response.js";
+import documentation from "./documentation.js";
 
 import db from "./models/index.js";
 
@@ -34,6 +35,9 @@ app.get("/", (req, res) => {
 import routes from "./routes/index.js";
 
 // ************ REGISTER ROUTES HERE ********** //
+app.get("/docs", (req, res) => {
+  return res.json(documentation);
+});
 routes(app);
 // ************ END ROUTE REGISTRATION ********** //
 
