@@ -34,6 +34,10 @@ class MovieController {
     try {
       const { id } = req.params;
       const data = await moviesService.getMovie(id);
+      if (!data) {
+        return errorResMsg(res, 404, "Movie not found");
+      }
+
       const comments = await commentsService.getComments(data.episode_id);
       const response = {
         title: data.title,
@@ -48,6 +52,9 @@ class MovieController {
         data: response,
       });
     } catch (error) {
+      if (error.response.status === 404) {
+        errorResMsg(res, error.response.status, "Movie not found");
+      }
       logger.error(error);
       errorResMsg(res, 500, "Something went wrong while fetching movie");
     }
